@@ -25,17 +25,32 @@ class SALL {
 	 * @param $assoc_args - Arguments stored in an associative array.
 	 */
 	public function save_all( $args, $assoc_args ) {
-		if ( ! empty( $assoc_args['post-type'] ) ) {
-			$post_type = strtolower( $assoc_args['post-type'] );
+		if ( ! empty( $args[0] ) ) {
+			$post_type = strtolower( $args[0] );
 		} else {
 			$post_type = 'post';
 		}
 
-		WP_CLI::success( 'Post type to trigger: ' . $post_type );
+		$initial_output = 'Post type to trigger: ' . $post_type;
+
+		if ( ! empty( $assoc_args['wpml'] ) && function_exists( 'icl_object_id' ) ) {
+			$wpml = strtolower( $assoc_args['wpml'] );
+
+			global $sitepress;
+
+			$sitepress->switch_lang( $wpml );
+
+			$initial_output = $initial_output . ' (WPML language set to ' . $wpml . ')';
+		}
+
+
+
+		WP_CLI::success( $initial_output );
 
 		$query_params = array(
 			'post_type'      => $post_type,
 			'posts_per_page' => -1,
+			'status'         => 'published',
 			'order'          => 'ASC',
 		);
 
