@@ -50,7 +50,7 @@ class SALL {
 		$query_params = array(
 			'post_type'      => $post_type,
 			'posts_per_page' => -1,
-			'status'         => 'published',
+			'post_status'    => 'publish',
 			'order'          => 'ASC',
 		);
 
