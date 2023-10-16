@@ -19,10 +19,26 @@ class SALL {
 	}
 
 	/**
-	 * Executes the actual saving of all posts regardless of post type.
+	 * Prints a greeting.
 	 *
-	 * @param $args       - Arguments stored by position.
-	 * @param $assoc_args - Arguments stored in an associative array.
+	 * ## OPTIONS
+	 *
+	 * <post_type>
+	 * : The post type you wish to trigger saves for.
+	 *
+	 * [--wpml=<language>]
+	 * : Force set a language in WPML if required.
+	 * ---
+	 * default: success
+	 * options:
+	 *   - success
+	 * ---
+	 *
+	 * ## EXAMPLES
+	 *
+	 *     wp save-all page --wpml=en
+	 *
+	 * @when after_wp_load
 	 */
 	public function save_all( $args, $assoc_args ) {
 		if ( ! empty( $args[0] ) ) {
@@ -43,8 +59,6 @@ class SALL {
 			$initial_output = $initial_output . ' (WPML language set to ' . $wpml . ')';
 		}
 
-
-
 		WP_CLI::success( $initial_output );
 
 		$query_params = array(
@@ -57,12 +71,10 @@ class SALL {
 		$results = new WP_Query( $query_params );
 
 		foreach ( $results->posts as $post ) {
-			WP_CLI::success( 'Updating ' . $post_type . ' ID # ' . $post->ID );
+			WP_CLI::log( 'Updating ' . $post_type . ' ID #' . $post->ID );
 			wp_update_post( $post );
 		}
-
 	}
-
 }
 
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
