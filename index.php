@@ -29,10 +29,6 @@ class SALL {
 	 * [--wpml=<language>]
 	 * : Force set a language in WPML if required.
 	 * ---
-	 * default: success
-	 * options:
-	 *   - success
-	 * ---
 	 *
 	 * ## EXAMPLES
 	 *
