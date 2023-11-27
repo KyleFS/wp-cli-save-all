@@ -55,7 +55,6 @@ class SALL {
 			$initial_output = $initial_output . ' (WPML language set to ' . $wpml . ')';
 		}
 
-		WP_CLI::success( $initial_output );
 
 		$query_params = array(
 			'post_type'      => $post_type,
@@ -66,10 +65,17 @@ class SALL {
 
 		$results = new WP_Query( $query_params );
 
+		WP_CLI::log( $initial_output );
+		$count = 0;
+
 		foreach ( $results->posts as $post ) {
-			WP_CLI::log( 'Updating ' . $post_type . ' ID #' . $post->ID );
+			WP_CLI::log( 'Updating ' . $post_type . ' ID #' . $post->ID . '. (' . $count++ . '/' . $results->post_count . ')' );
 			wp_update_post( $post );
 		}
+
+		WP_CLI::success( 'Saving complete.' );
+
+
 	}
 }
 
